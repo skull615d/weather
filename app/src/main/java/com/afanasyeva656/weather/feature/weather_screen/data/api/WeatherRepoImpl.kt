@@ -1,7 +1,7 @@
 package com.afanasyeva656.weather.feature.weather_screen.data.api
 
-class WeatherRepoImpl(val weatherRemoteSource: WeatherRemoteSource): WeatherRepo {
-    override fun getWeather(): String {
-        return "-"
+class WeatherRepoImpl(private val source: WeatherRemoteSource): WeatherRepo {
+    override suspend fun getWeather(): String {
+        return source.getWeather("").main.temp
     }
 }

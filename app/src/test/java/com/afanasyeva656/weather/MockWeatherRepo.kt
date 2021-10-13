@@ -18,7 +18,7 @@ class MockWeatherRepo : WeatherRepo {
         "Moscow" to BigDecimal("25.6")
     )
 
-    override fun getWeather(): String =
+    override suspend fun getWeather(): String =
         weatherYandex
 //            .filterValues { it > BigDecimal.ZERO }
             .map { (city, temperature) ->
