@@ -6,54 +6,53 @@ import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afanasyeva656.weather.R
 import com.afanasyeva656.weather.databinding.ActivityWeatherBinding
 import com.afanasyeva656.weather.feature.city_screen.domain.model.CityDomainModel
 import com.afanasyeva656.weather.feature.city_screen.ui.CityScreenViewModel
 import com.afanasyeva656.weather.feature.weather_screen.domain.model.WeatherDomainModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.afanasyeva656.weather.utils.setDebouncingTextListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 
-class WeatherScreenActivity: AppCompatActivity(), TextWatcher {
+class WeatherScreenActivity : AppCompatActivity(), KoinComponent {
     val weatherScreenViewModel by viewModel<WeatherScreenViewModel>()
     val cityScreenViewModel by viewModel<CityScreenViewModel>()
-    lateinit var binding: ActivityWeatherBinding
+    private val binding: ActivityWeatherBinding by viewBinding(ActivityWeatherBinding::bind)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWeatherBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        weatherScreenViewModel.lifeData.observe(this, Observer(::renderWeather))
+        setContentView(R.layout.activity_weather)
+        weatherScreenViewModel.liveData.observe(this, Observer(::renderWeather))
         weatherScreenViewModel.requestWeather("Moscow")
         cityScreenViewModel.lifeData.observe(this, Observer(::renderCity))
-        binding.actvCity.addTextChangedListener(this)
-        binding.actvCity.setOnItemClickListener { adapterView, view, i, l ->
-            val city = cityScreenViewModel.lifeData.value?.cities?.get(i)?:"Moscow"
-            weatherScreenViewModel.requestWeather(city)
+        with(binding) {
+            actvCity.setDebouncingTextListener {
+                cityScreenViewModel.requestCities(it)
+            }
+            actvCity.setOnItemClickListener { adapterView, view, i, l ->
+                val city = cityScreenViewModel.lifeData.value?.cities?.get(i) ?: "Moscow"
+                weatherScreenViewModel.requestWeather(city)
+            }
         }
     }
 
     private fun renderWeather(state: WeatherDomainModel) {
-        binding.tvTempeture.text = "Temperature ${state.temperature}"
-        binding.tvHumidity.text = "Humidity ${state.humidity}"
-        binding.tvTempMax.text = "Temperature maximum ${state.tempMax}"
-        binding.tvTempMin.text = "Temperature minimum ${state.tempMin}"
+        with(binding) {
+            tvTempeture.text = getString(R.string.temperature, state.temperature)
+            tvHumidity.text = getString(R.string.humidity, state.humidity)
+            tvTempMax.text = getString(R.string.temperature_max, state.tempMax)
+            tvTempMin.text = getString(R.string.temperature_min, state.tempMin)
+        }
     }
+
     private fun renderCity(state: CityDomainModel) {
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, state.cities)
-        binding.actvCity.setAdapter(adapter)
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun afterTextChanged(p0: Editable?) {
-        p0?.let {
-            cityScreenViewModel.requestCities(it.toString())
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, state.cities)
+        with(binding) {
+            actvCity.setAdapter(adapter)
         }
     }
 }

@@ -7,7 +7,7 @@ import com.afanasyeva656.weather.feature.weather_screen.data.api.WeatherRepoImpl
 import com.afanasyeva656.weather.feature.weather_screen.domain.WeatherInteractor
 import com.afanasyeva656.weather.feature.weather_screen.ui.WeatherScreenViewModel
 import okhttp3.OkHttpClient
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -47,7 +47,7 @@ val appModule = module {
         WeatherInteractor(get<WeatherRepo>())
     }
 
-    viewModel {
+    viewModel() {
         WeatherScreenViewModel(get<WeatherInteractor>())
     }
 }

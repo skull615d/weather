@@ -7,7 +7,7 @@ import com.afanasyeva656.weather.feature.city_screen.data.api.CityRepoImpl
 import com.afanasyeva656.weather.feature.city_screen.domain.CityInteractor
 import com.afanasyeva656.weather.feature.city_screen.ui.CityScreenViewModel
 import okhttp3.OkHttpClient
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -46,7 +46,7 @@ val appModule = module {
         CityInteractor(get<CityRepo>())
     }
 
-    viewModel {
+    viewModel() {
         CityScreenViewModel(get<CityInteractor>())
     }
 }
