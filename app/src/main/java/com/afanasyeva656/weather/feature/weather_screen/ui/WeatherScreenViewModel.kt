@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 class WeatherScreenViewModel(private val weatherInteractor: WeatherInteractor) : ViewModel(){
     val lifeData: MutableLiveData<WeatherDomainModel> = MutableLiveData()
 
-    fun requestWeather() {
+    fun requestWeather(city: String) {
         viewModelScope.launch {
-            lifeData.postValue(weatherInteractor.getWeather())
+            lifeData.postValue(weatherInteractor.getWeather(city))
         }
     }
 }

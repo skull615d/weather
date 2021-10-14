@@ -5,7 +5,7 @@ import com.afanasyeva656.weather.feature.weather_screen.domain.model.WeatherDoma
 
 // можем объединить тут несколько репозиториев
 class WeatherInteractor(private val repository: WeatherRepo) {
-    suspend fun getWeather(): WeatherDomainModel {
-        return repository.getWeather()
+    suspend fun getWeather(city: String): WeatherDomainModel {
+        return repository.getWeather(city)
     }
 }

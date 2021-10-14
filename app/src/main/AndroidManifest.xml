@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Weather">
+        android:theme="@style/Theme.Weather"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,6 +24,8 @@
         <activity
             android:name=".feature.weather_screen.ui.WeatherScreenActivity">
 
+        </activity>
+        <activity android:name=".feature.city_screen.ui.CityScreenActivity">
         </activity>
     </application>
 

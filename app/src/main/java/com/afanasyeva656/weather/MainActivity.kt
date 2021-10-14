@@ -3,13 +3,10 @@ package com.afanasyeva656.weather
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import com.afanasyeva656.weather.feature.weather_screen.ui.WeatherScreenActivity
 
 class MainActivity : AppCompatActivity() {
-    private val presenter = MainPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
