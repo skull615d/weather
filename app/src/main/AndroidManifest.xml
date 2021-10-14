@@ -25,8 +25,5 @@
             android:name=".feature.weather_screen.ui.WeatherScreenActivity">
 
         </activity>
-        <activity android:name=".feature.city_screen.ui.CityScreenActivity">
-        </activity>
     </application>
-
 </manifest>
