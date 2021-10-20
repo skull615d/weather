@@ -8,34 +8,34 @@ import androidx.lifecycle.Observer
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afanasyeva656.weather.R
 import com.afanasyeva656.weather.databinding.ActivityWeatherBinding
-import com.afanasyeva656.weather.feature.city_screen.domain.model.CityDomainModel
 import com.afanasyeva656.weather.feature.city_screen.ui.CityScreenViewModel
 import com.afanasyeva656.weather.feature.wind_screen.ui.WindScreenActivity
 import com.afanasyeva656.weather.utils.setDebouncingTextListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
+import com.afanasyeva656.weather.feature.city_screen.ui.UiEvent as CityScreenUiEvent
+import com.afanasyeva656.weather.feature.city_screen.ui.ViewState as CityScreenViewState
 
 class WeatherScreenActivity : AppCompatActivity(), KoinComponent {
     val weatherViewModel by viewModel<WeatherScreenViewModel>()
-    val cityScreenViewModel by viewModel<CityScreenViewModel>()
+    val cityViewModel by viewModel<CityScreenViewModel>()
     private val binding: ActivityWeatherBinding by viewBinding(ActivityWeatherBinding::bind)
-    var city: String = "Moscow"
     var speed: Double = 0.0
     var degree: Int = 0
+    private lateinit var adapter: ArrayAdapter<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
         weatherViewModel.viewState.observe(this, Observer(::renderWeather))
-        cityScreenViewModel.lifeData.observe(this, Observer(::renderCity))
+        cityViewModel.viewState.observe(this, Observer(::renderCity))
         with(binding) {
             actvCity.setDebouncingTextListener {
-                cityScreenViewModel.requestCities(it)
+                cityViewModel.processUiEvent(CityScreenUiEvent.GetCity(it))
             }
             actvCity.setOnItemClickListener { adapterView, view, i, l ->
-                city = cityScreenViewModel.lifeData.value?.cities?.get(i) ?: city
-                //weatherScreenViewModel.requestWeather(city)
+                val city = adapter.getItem(i) ?: ""
                 weatherViewModel.processUiEvent(UiEvent.GetWeather(city))
                 binding.tvCity.text = getString(R.string.city, city)
             }
@@ -60,9 +60,12 @@ class WeatherScreenActivity : AppCompatActivity(), KoinComponent {
         }
     }
 
-    private fun renderCity(state: CityDomainModel) {
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, state.cities)
+    private fun renderCity(state: CityScreenViewState) {
+        adapter = ArrayAdapter<String>(
+            this,
+            R.layout.support_simple_spinner_dropdown_item,
+            state.cityDomainModel.cities
+        )
         with(binding) {
             actvCity.setAdapter(adapter)
         }
