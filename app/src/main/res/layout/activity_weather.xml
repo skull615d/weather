@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Weather">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilCity"
@@ -21,51 +22,87 @@
             android:id="@+id/actvCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="City" />
+            android:hint="@string/city_hint"
+            android:lines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tvTempeture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="120dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilCity"
-        tools:text="Temperature 27.5" />
-
-    <TextView
-        android:id="@+id/tvHumidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvTempeture"
-        app:layout_constraintTop_toBottomOf="@+id/tvTempeture"
-        tools:text="Humidity 40" />
-
-    <TextView
-        android:id="@+id/tvTempMax"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvHumidity"
-        app:layout_constraintTop_toBottomOf="@id/tvHumidity"
-        tools:text="Temperature max 27.5" />
-
-    <TextView
-        android:id="@+id/tvTempMin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvTempMax"
-        app:layout_constraintTop_toBottomOf="@+id/tvTempMax"
-        tools:text="Temperature min 27.5" />
 
     <Button
         android:id="@+id/bWind"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        android:text="Wind"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="16dp"
+        android:text="@string/wind"
+        app:layout_constraintEnd_toEndOf="@+id/cv"
+        app:layout_constraintStart_toStartOf="@+id/cv"
+        app:layout_constraintTop_toBottomOf="@+id/cv" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilCity"
+        app:layout_constraintStart_toStartOf="@+id/tilCity"
+        app:layout_constraintTop_toBottomOf="@+id/tilCity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tvCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toTopOf="@+id/container"
+                tools:text="City: Kazan" />
+
+            <TextView
+                android:id="@+id/tvTempeture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/tvCity"
+                tools:text="Temperature: 27.5" />
+
+            <TextView
+                android:id="@+id/tvHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/tvTempeture"
+                tools:text="Humidity: 40" />
+
+            <TextView
+                android:id="@+id/tvTempMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/tvHumidity"
+                tools:text="Temperature max: 27.5" />
+
+            <TextView
+                android:id="@+id/tvTempMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/tvTempMax"
+                tools:text="Temperature min: 27.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
